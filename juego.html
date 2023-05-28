@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        nav {
+            background-color: lightgrey;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+        nav ul {
+            padding: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        nav ul li {
+            width: 100%;
+            list-style: none;
+            display: flex;
+            justify-content: center;
+        }
+        nav ul li a {
+            padding: 20px;
+        }
+        nav ul li:hover {
+            background: white;
+        }
+        body{
+            background-color: black;
+        }
+        .bloquetarjetas {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            width: 100%;
+            display: flex;
+            margin: 50px 0px;
+            justify-content: space-around;
+        }
+        .bloquetarjetas p{
+            width: 100%;
+            color: black;
+            background-color: white;
+        }
+        .tarjetaizq,.tarjetacent,.tarjetader{
+            box-shadow: 6px 4px 10px 0px red;
+            background-color: white;
+            width: 20%;
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .tarjetaizq{
+            grid-column: 1/2;
+        }
+        .tarjetacent{
+            grid-column: 2/3;
+        }
+        .tarjetader{
+            grid-column: 3/3;
+        }
+        p {
+            text-align: center;
+        }
+        .cabeceratexto{
+            margin: 20px;
+            font-weight: bold;
+        }
+        #texto{
+            margin: 20px;
+        }
+
+        h1{
+            color: white;
+            text-align: center;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            margin-top: 20px;
+            text-shadow: 5px 3px 15px white;
+        }
+        h2{
+            color: white;
+            text-align: center;
+            margin: 20px 0px; 
+        }
+
+        footer{
+            color: white;
+            width: 100%;
+        }
+        footer p{
+            padding: 10px 150px 30px 150px;
+            text-align: center;
+        }
+
+        img {
+            width: 100%;
+            height: 50%;
+        }
+        .imagen{
+            height: 600px;
+        }
+        #icono {
+            width: 80px;
+            height: 140px;
+        }
+        #header{
+            display: flex;
+            flex-direction: row;
+        }
+        li img{
+            height: 20px;
+            width: 20px;
+        }
+
+        @media (max-width:768px){
+        #header{
+            flex-direction: column;
+        }
+        nav{
+            position: fixed;
+            width: 100%;
+        }
+        nav ul{
+            flex-direction: row;
+        }
+        nav ul li a{
+           padding: 10px;
+           width: 100%;
+           text-align: center;
+        }
+        .bloquetarjetas{
+            display: grid;
+            grid-template-rows: repeat(3,1fr);
+            margin: 0;
+            width: 100%;
+        }
+        .tarjetaizq,.tarjetacent,.tarjetader{
+            width: 100%;
+            display: flex;
+            grid-column: 2/3;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+        }
+        .tarjetaizq{
+            grid-row: 1/2;
+        }
+        .tarjetacent{
+            grid-row: 2/3;
+        }
+        .tarjetader{
+            grid-row: 3/3;
+        }
+        footer #texto {
+            width: 95%;
+            margin: 0;
+            padding:0px 0px 0px 15px;
+            text-align: left;
+        }
+    }
+
+    </style>
+</head>
+<body>
+    <div id="header"><nav>
+        <ul>
+            <li><a href="index.html"><img src="imagenes/casa.png"></a></li>
+            <li><a href=""><img src="imagenes/palanca-de-mando.png"></a></li>
+            <li><a href="formulario.html"><img src="imagenes/letra.png"></a></li>
+            <li><a href=""><img src="imagenes/grupo.png"></a></li>
+        </ul>
+    </nav></div>
+    <div id="general"></div>    
+
+    <script>
+        const valores = window.location.search;
+        const urlParams = new URLSearchParams(valores);
+       
+        const id = urlParams.get('id');
+
+        const url = "https://free-to-play-games-database.p.rapidapi.com/api/game?id=" + id;
+
+        fetch(url,{
+	     method: 'GET',
+	     headers: {
+		     'X-RapidAPI-Key': '6794d82e63msh7504074a084680cp10b435jsn696e01831761',
+		     'X-RapidAPI-Host': 'free-to-play-games-database.p.rapidapi.com'
+	     }})
+            .then(response => response.json())
+            .then(function (juego) {
+                console.log(juego.title);
+
+                document.getElementById("header").innerHTML +=
+                "<img src='" + juego.screenshots[2].image + "'  class='imagen'> ";
+                document.getElementById("general").innerHTML +=
+                "<h1>" + juego.title + "</h1>" +
+                        "<div class='bloquetarjetas'>" +
+                            "<div class='tarjetaizq'>" + 
+                                "<p id='icono'>" + "<img src='imagenes/edificio.gif'> " + "</p>" +
+                                "<p class='cabeceratexto'>" + "Desarrollador" + "</p>" +
+                                "<p id= 'texto'>" + juego.developer + "</p>" +
+                            "</div>" +
+                            "<div class='tarjetacent'>" + 
+                                "<p id='icono'>" + "<img src='imagenes/barra-de-vida.gif'> " + "</p>" +
+                                "<p class='cabeceratexto'>" + "Genero" + "</p>" +
+                                "<p id= 'texto'>" + juego.genre + "</p>" +
+                            "</div>" + 
+                            "<div class='tarjetader'>" + 
+                                "<p id='icono'>" +  "<img src='imagenes/calendario.gif'> " + "</p>" +
+                                "<p class='cabeceratexto'>" + "Fecha de Lanzamiento" + "</p>" +
+                                "<p id= 'texto'>" + juego.release_date + "</p>" +
+                            "</div>" +
+                        "</div>" + 
+                        "<footer>" + 
+                                "<h2>" + "Descripcion" +"</h2>" +
+                                "<p id= 'texto'>" + juego.description + "</p>" + 
+                        "</footer>";
+            });        
+
+
+
+    </script>
+</body>
+</html>
